@@ -18,10 +18,29 @@ int main(void) {
 	//
 	// Setup game scene objects here
 	//
-	addObject("Player", glm::vec2(0.0f, 0.0f), glm::radians(0.0f),glm::vec2(0.25f, 0.25f), "resources\\textures\\player1_ship.png");
-	addObject("Player2", glm::vec2(0.0f, 0.0f), glm::radians(0.0f), glm::vec2(0.25f, 0.25f), "resources\\textures\\player1_ship.png");
+	addObject("Player1", glm::vec2(0.0f, 0.0f), glm::radians(0.0f), glm::vec2(1.0f, 1.0f));
+	addObject("Player2", glm::vec2(0.0f, 0.0f), glm::radians(0.0f), glm::vec2(1.0f, 1.0f));
+
+	GameObject2D* Player1Object =
+	getObject("Player1");
+	if (Player1Object != nullptr) {
+		Player1Object->position = glm::vec2(-1.0f, -1.0f);
+		Player1Object->orientation = glm::radians(45.0f);
+		Player1Object->size = glm::vec2(0.25f, 0.25f);
+		Player1Object->textureID = loadTexture("resources\\textures\\player1_ship.png");
+	}
+	GameObject2D* Player2Object =
+		getObject("Player2");
+	if (Player2Object != nullptr) {
+		Player2Object->position = glm::vec2(1.0f, 1.0f);
+		Player2Object->orientation = glm::radians(225.0f);
+		Player2Object->size = glm::vec2(0.25f, 0.25f);
+		Player2Object->textureID = loadTexture("resources\\textures\\USS Relaint.png");
+	}
+
 
 	
+
 
 
 
