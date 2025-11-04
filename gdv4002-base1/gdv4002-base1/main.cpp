@@ -14,6 +14,7 @@ int main(void) {
 		printf("Cannot setup game window!!!\n");
 		return initResult; // exit if setup failed
 	}
+	printf("Connecting to Jumpgate Network... Failed Accessing Local Sensors... Online !Incoming Contacts! \n");
 
 	//
 	// Setup game scene objects here
