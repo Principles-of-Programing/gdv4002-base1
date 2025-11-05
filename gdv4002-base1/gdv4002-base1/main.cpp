@@ -16,6 +16,8 @@ int main(void) {
 	}
 	printf("Connecting to Jumpgate Network... Failed Accessing Local Sensors... Online !Incoming Contacts! \n");
 
+	hideAxisLines();
+
 	//
 	// Setup game scene objects here
 	//
