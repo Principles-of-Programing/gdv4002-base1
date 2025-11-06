@@ -1,5 +1,7 @@
 #pragma once
 
+// Engine.h ver 1.1
+
 #include "GraphicsCore.h"
 
 #include "GUMemory.h"
@@ -11,7 +13,9 @@
 #include <math.h>
 #include <iostream>
 #include <string>
+#include <map>
 #include <unordered_map>
+#include <bitset>
 #include <glm/glm.hpp>
 #include "texture_loader.h"
 
@@ -24,7 +28,7 @@ typedef void (*UpdateFn)(GLFWwindow* window, double tDelta);
 struct GameObjectCollection {
 
 	int					objectCount;
-	GameObject2D**		objectArray;
+	GameObject2D** objectArray;
 
 	// Default constructor - setup empty collection (0, nullptr)
 	GameObjectCollection() {

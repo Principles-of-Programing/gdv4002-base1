@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+// Engine.cpp ver 1.1
+
 #pragma region Engine variables
 
 static GLFWwindow* window = nullptr;
@@ -12,13 +14,13 @@ static glm::vec2 viewplaneSize = glm::vec2(5.0f, 5.0f);
 static float viewplaneAspect = 1.0f;
 
 // Store single copy of textures in map - use path as key so don't load same texture more than once
-static std::unordered_map<std::string, GLuint> textureLib;
+static std::map<std::string, GLuint> textureLib;
 
 // Store objects with a name key
-static std::unordered_map<std::string, GameObject2D*> gameObjects;
+static std::map<std::string, GameObject2D*> gameObjects;
 
 // count number of instances of a given object name in gameObjects
-static std::unordered_map<std::string, int> objectCount;
+static std::map<std::string, int> objectCount;
 
 static bool _showAxisLines = true;
 
@@ -71,7 +73,7 @@ int engineInit(const char* windowTitle, int initWidth, int initHeight, float ini
 	glfwMakeContextCurrent(window);
 
 	windowTitleString = std::string(windowTitle);
-	
+
 	windowWidth = initWidth;
 	windowHeight = initHeight;
 	viewplaneAspect = (float)windowHeight / (float)windowWidth;
@@ -219,7 +221,7 @@ GameObject2D* addObject(const char* name, glm::vec2 initPosition, float initOrie
 	GameObject2D* newObject = new GameObject2D(initPosition, initOrientation, initSize, texture);
 
 	return addObject(name, newObject);
-	
+
 }
 
 GameObject2D* addObject(const char* name, GameObject2D* newObject) {
@@ -230,14 +232,17 @@ GameObject2D* addObject(const char* name, GameObject2D* newObject) {
 		string keyString;
 
 		// Find out if object exists and set name key
-		if (objectCount[name] == NULL) {
+		auto objectCountIter = objectCount.find(name);
 
-			// name not registered so first instance
-			objectCount[name] = 1; // initialise key with a value of 1
+		if (objectCountIter == objectCount.end()) {
+
+			// name not registered so insert first count instance
+			objectCount[name] = 1; // insert and initialise key with a value of 1
 			keyString = string(name);
 		}
 		else {
 
+			// name does exist so increase count
 			objectCount[name] = objectCount[name] + 1; // pre-increment count against 'name'
 			keyString = string(name) + to_string(objectCount[name]);
 		}
@@ -254,14 +259,25 @@ GameObject2D* addObject(const char* name, GameObject2D* newObject) {
 // getObject returns the object with the *exact* key match - return null if nothing matches
 GameObject2D* getObject(const char* key) {
 
-	return gameObjects[key];
+	if (gameObjects.find(key) != gameObjects.end()) {
+
+		return gameObjects[key];
+	}
+	else {
+
+		return nullptr;
+	}
 }
+
 
 // Return a collection of object where part of the object's key matches the 'key' parameter.  Value semantics is applied so when the caller eventually goes out of scope the collection's destructor will automatically free the internally allocated memory for the collection.
 GameObjectCollection getObjectCollection(const char* key) {
 
+	// Find out if object exists and set name key
+	auto objectCountIter = objectCount.find(key);
+
 	// Check at least one object has the key
-	if (objectCount[key] == NULL) {
+	if (objectCountIter == objectCount.end()) {
 
 		// If key not present return empty collection (0, nullptr)
 		return GameObjectCollection();
@@ -538,10 +554,6 @@ void defaultKeyboardHandler(GLFWwindow* window, int key, int scancode, int actio
 			// If escape is pressed tell GLFW we want to close the window (and quit)
 			glfwSetWindowShouldClose(window, true);
 			break;
-
-		default:
-			{
-			}
 		}
 	}
 	// If not check a key has been released
@@ -563,6 +575,7 @@ void listObjectCounts() {
 
 		printf("%s has count %d\n", iter->first.c_str(), iter->second);
 	}
+	printf("\n");
 }
 
 void listGameObjectKeys() {
@@ -572,6 +585,7 @@ void listGameObjectKeys() {
 
 		printf("%s\n", iter->first.c_str());
 	}
+	printf("\n");
 }
 
 #pragma endregion
