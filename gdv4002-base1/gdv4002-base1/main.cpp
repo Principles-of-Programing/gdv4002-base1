@@ -4,6 +4,7 @@
 void myUpdate(GLFWwindow* window, double tDelta);
 float enemyPhase[3] = { 0.0f, 0.0f, 0.0f };
 float enemyPhaseVelocity[3] = { glm::radians(90.f), glm::radians(90.f), glm::radians(90.f) };
+void mykeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 
 int main(void) {
@@ -54,7 +55,7 @@ int main(void) {
 	
 	listObjectCounts();
 	setUpdateFunction(myUpdate);
-
+	setKeyboardHandler(mykeyboardHandler);
 
 
 	// Enter main loop - this handles update and render calls
@@ -70,18 +71,17 @@ int main(void) {
 }
 float anglesPerSecond = glm::radians(45.0f);
 float playerVelocity = 2.0f; // units per second
-/*void myUpdate(GLFWwindow* window, double tDelta) {
-	GameObjectCollection enemies = getObjectCollection("enemy");
-	enemies.objectArray[0]->position.y = sinf(enemyPhase[0]);
-	enemyPhase[0] += enemyPhaseVelocity[0] * (float)tDelta;
-
-
-}
-*/
 void myUpdate(GLFWwindow* window, double tDelta) {
 	GameObjectCollection enemies = getObjectCollection("Enemy");
 	for (int i = 0; i < (enemies.objectCount); i++) {
 		enemies.objectArray[i]->position.y = sinf(enemyPhase[i]);
 		enemyPhase[i] += enemyPhaseVelocity[i] * (float)tDelta;
+	}
+}
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	// check if the key is pressed 
+		}
 	}
 }
