@@ -2,10 +2,15 @@
 
 // Function prototypes
 void myUpdate(GLFWwindow* window, double tDelta);
+void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
+void playerControls(GameObject2D* player, double tDelta);
+
 float enemyPhase[3] = { 0.0f, 0.0f, 0.0f };
 float enemyPhaseVelocity[3] = { glm::radians(90.f), glm::radians(90.f), glm::radians(90.f) };
-void mykeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-
+bool wKeyPressed = false;
+bool aKeyPressed = false;
+bool sKeyPressed = false;
+bool dKeyPressed = false;
 
 int main(void) {
 	const float pi = 3.14159265359f;
@@ -55,7 +60,7 @@ int main(void) {
 	
 	listObjectCounts();
 	setUpdateFunction(myUpdate);
-	setKeyboardHandler(mykeyboardHandler);
+	setKeyboardHandler(myKeyboardHandler);
 
 
 	// Enter main loop - this handles update and render calls
@@ -70,18 +75,79 @@ int main(void) {
 	return 0;
 }
 float anglesPerSecond = glm::radians(45.0f);
-float playerVelocity = 2.0f; // units per second
+float playerVelocity = 1.0f; // units per second
+float leftPlayerOrientationVelocity = glm::radians(20.0f); // radians per second
+float rightPlayerOrientationVelocity = glm::radians(-20.0f); // radians per second
+
 void myUpdate(GLFWwindow* window, double tDelta) {
+	GameObject2D* player = getObject("Player1");
+	playerControls(player, tDelta);
+
 	GameObjectCollection enemies = getObjectCollection("Enemy");
 	for (int i = 0; i < (enemies.objectCount); i++) {
 		enemies.objectArray[i]->position.y = sinf(enemyPhase[i]);
 		enemyPhase[i] += enemyPhaseVelocity[i] * (float)tDelta;
 	}
 }
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+void playerControls(GameObject2D* player, double tDelta) {
+	if (wKeyPressed) {
+		glm::vec2 forward = glm::vec2(cosf(player->orientation), sinf(player->orientation));
+		player->position += forward * playerVelocity * (float)tDelta;
+	}
+	if (aKeyPressed) {
+		player->orientation += anglesPerSecond * (float)tDelta;
+		glm::vec2 left = leftPlayerOrientationVelocity * glm::vec2(-sinf(player->orientation), cosf(player->orientation));
+	}
+	if (sKeyPressed) {
+		glm::vec2 backward = glm::vec2(-cosf(player->orientation), -sinf(player->orientation));
+		player->position += backward * playerVelocity * (float)tDelta;
+	}
+	if (dKeyPressed) {
+		player->orientation -= anglesPerSecond * (float)tDelta;
+		glm::vec2 right = rightPlayerOrientationVelocity * glm::vec2(sinf(player->orientation), -cosf(player->orientation));
+	}
+}
 
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	// check if the key is pressed 
+	if (action == GLFW_PRESS) {
+		switch (key) {
+		case GLFW_KEY_W:
+			wKeyPressed = true;
+			break;
+		case GLFW_KEY_A:
+			aKeyPressed = true;
+			break;
+		case GLFW_KEY_S:
+			sKeyPressed = true;
+			break;
+		case GLFW_KEY_D:
+			dKeyPressed = true;
+			break;
+		}
+	}
+
+	if (action == GLFW_RELEASE)
+	{
+		switch (key) {
+		case GLFW_KEY_W:
+			wKeyPressed = false;
+			std::cout << "W key released" << std::endl;
+			break;
+		case GLFW_KEY_A:
+			aKeyPressed = false;
+			std::cout << "A key released" << std::endl;
+			break;
+		case GLFW_KEY_S:
+			sKeyPressed = false;
+			std::cout << "S key released" << std::endl;
+			break;
+		case GLFW_KEY_D:
+			dKeyPressed = false;
+			std::cout << "D key released" << std::endl;
+			break;
+
 		}
 	}
 }
