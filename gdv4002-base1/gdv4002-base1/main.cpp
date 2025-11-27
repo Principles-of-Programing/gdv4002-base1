@@ -1,10 +1,11 @@
 #include "Engine.h"
 #include "glPrint.h"
-
+#include "Player.h"
 // Function prototypes
 void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 void playerControls(GameObject2D* player, double tDelta);
+void windowcontrols(GLFWwindow* window, double tDelta);
 
 float enemyPhase[3] = { 0.0f, 0.0f, 0.0f };
 float enemyPhaseVelocity[3] = { glm::radians(90.f), glm::radians(90.f), glm::radians(90.f) };
@@ -27,6 +28,10 @@ int main(void) {
 	}
 	printf("System Loaded Accessing...\n");
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDepthFunc(GL_ALWAYS);
+	// Optionally hide axis lines
 	hideAxisLines();
 
 	//
@@ -65,11 +70,12 @@ float rightPlayerOrientationVelocity = glm::radians(-20.0f); // radians per seco
 void myUpdate(GLFWwindow* window, double tDelta) {
 	GameObject2D* player = getObject("Player1");
 	playerControls(player, tDelta);
+	windowcontrols(window, tDelta);
 
 	GameObjectCollection enemies = getObjectCollection("Enemy");
 	for (int i = 0; i < (enemies.objectCount); i++) {
 		enemies.objectArray[i]->position.y = sinf(enemyPhase[i]);
-		enemyPhase[i] += enemyPhaseVelocity[i] * (float)tDelta;
+		enemyPhase[i] += enemyPhaseVelocity[i] * (float)tDelta * 0.5f;
 	}
 }
 
@@ -78,7 +84,7 @@ void windowcontrols(GLFWwindow* window, double tDelta) {
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 }
-void playerControls(GameObject2D* player, double tDelta) {
+/*void playerControls(GameObject2D* player, double tDelta) {
 	if (wKeyPressed) {
 		glm::vec2 forward = glm::vec2(cosf(player->orientation), sinf(player->orientation));
 		player->position += forward * playerVelocity * (float)tDelta;
@@ -95,7 +101,8 @@ void playerControls(GameObject2D* player, double tDelta) {
 		player->orientation -= anglesPerSecond * (float)tDelta;
 		glm::vec2 right = rightPlayerOrientationVelocity * glm::vec2(sinf(player->orientation), -cosf(player->orientation));
 	}
-}
+}*/
+
 
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	// check if the key is pressed 

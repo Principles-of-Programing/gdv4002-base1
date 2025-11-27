@@ -16,6 +16,9 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{84855feb-8d03-4d9e-a7b0-0ef0c05489c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="My Classes">
+      <UniqueIdentifier>{86fafae9-b55d-481c-80b3-52a60aef084b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +42,12 @@
     <ClCompile Include="GameObject2D.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="glPrint.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>My Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -61,6 +70,12 @@
     </ClInclude>
     <ClInclude Include="GameObject2D.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="glPrint.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>My Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
