@@ -1,6 +1,6 @@
 #include "Engine.h"
 
-// Engine.cpp ver 1.1
+// Engine.cpp ver 1.2
 
 #pragma region Engine variables
 
@@ -28,6 +28,9 @@ static glm::vec4 backgroundColour(0.0f, 0.0f, 0.0f, 1.0f);
 
 static RenderFn overrideRenderFn = nullptr;
 static UpdateFn overrideUpdateFn = nullptr;
+static ResizeFn resizeFn = nullptr;
+
+static bool __overrideUpdate;
 
 #pragma endregion
 
@@ -115,10 +118,26 @@ void engineMainLoop() {
 		double tDelta = gameClock->gameTimeDelta();
 
 		// Update game environment
-		if (overrideUpdateFn)
-			overrideUpdateFn(window, tDelta);
-		else
+		if (__overrideUpdate) {
+
+			// override completely the update function call
+			if (overrideUpdateFn != nullptr) {
+
+				overrideUpdateFn(window, tDelta);
+			}
+		}
+		else {
+
+			// don't override update - call default which called update on each game object...
 			defaultUpdateScene(tDelta);
+
+			// ...then if an update function is given, call this after the above default update
+			if (overrideUpdateFn != nullptr) {
+
+				overrideUpdateFn(window, tDelta);
+			}
+		}
+			
 
 		// Render current frame
 		defaultRenderScene();
@@ -170,9 +189,15 @@ void setRenderFunction(RenderFn fn) {
 }
 
 // Set update function - once set our own game update code will be used
-void setUpdateFunction(UpdateFn fn) {
+void setUpdateFunction(UpdateFn fn, bool overrideUpdate) {
 
 	overrideUpdateFn = fn;
+	__overrideUpdate = overrideUpdate;
+}
+
+void setResizeFunction(ResizeFn fn) {
+
+	resizeFn = fn;
 }
 
 #pragma endregion
@@ -230,9 +255,22 @@ GameObject2D* addObject(const char* name, GameObject2D* newObject) {
 
 		// If object created successfully setup string for new object 'key'
 		string keyString;
+		string collectionName = string(""); // existing collection name if present
 
 		// Find out if object exists and set name key
-		auto objectCountIter = objectCount.find(name);
+		auto objectCountIter = objectCount.begin();
+		while (objectCountIter != objectCount.end()) {
+
+			if (string(name).find(objectCountIter->first) != std::string::npos) {
+				
+				collectionName = objectCountIter->first;
+				break;
+			}
+			else {
+
+				objectCountIter++;
+			}
+		}
 
 		if (objectCountIter == objectCount.end()) {
 
@@ -243,8 +281,8 @@ GameObject2D* addObject(const char* name, GameObject2D* newObject) {
 		else {
 
 			// name does exist so increase count
-			objectCount[name] = objectCount[name] + 1; // pre-increment count against 'name'
-			keyString = string(name) + to_string(objectCount[name]);
+			objectCount[collectionName] = objectCount[collectionName] + 1; // pre-increment count against 'name'
+			keyString = string(name) + to_string(objectCount[collectionName]);
 		}
 
 		// Store object
@@ -318,7 +356,7 @@ bool deleteObject(const char* key) {
 
 		// Now we need to string-match objKey to the objectCount array.
 		// objectCount keys are a substring of gameObject keys that have numbers appended to differentiate.
-		// When found we decrememt the count.  If it reaches zero erase the key from the count array
+		// When found we decrement the count.  If it reaches zero erase the key from the count array
 		for (auto countIter = objectCount.begin(); countIter != objectCount.end(); countIter++) {
 
 			if (objKey.find(countIter->first) != std::string::npos) {
@@ -463,6 +501,21 @@ float getViewplaneHeight() {
 	return viewplaneSize.y;
 }
 
+glm::vec4 getBackgroundColour() {
+
+	return backgroundColour;
+}
+
+void setBackgroundColour(glm::vec4 newColour) {
+
+	backgroundColour = newColour;
+}
+
+int getObjectCounts(string key) {
+
+	return objectCount[key];
+}
+
 #pragma endregion
 
 
@@ -540,6 +593,11 @@ void defaultResizeWindow(GLFWwindow* window, int width, int height)
 
 	viewplaneAspect = (float)windowHeight / (float)windowWidth;
 	viewplaneSize.y = viewplaneSize.x * viewplaneAspect;
+
+	if (resizeFn != nullptr) {
+
+		resizeFn(window, getViewplaneWidth(), getViewplaneHeight());
+	}
 }
 
 void defaultKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
