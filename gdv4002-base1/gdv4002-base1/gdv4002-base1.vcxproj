@@ -134,6 +134,7 @@ copy "$(SolutionDir)Libs\FreeImage\Wrapper\FreeImagePlus\dist\x64\FreeImagePlus.
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject2D.cpp" />
     <ClCompile Include="glPrint.cpp" />
@@ -145,6 +146,7 @@ copy "$(SolutionDir)Libs\FreeImage\Wrapper\FreeImagePlus\dist\x64\FreeImagePlus.
     <ClCompile Include="texture_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameObject2D.h" />
     <ClInclude Include="glPrint.h" />
