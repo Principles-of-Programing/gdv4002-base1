@@ -2,9 +2,9 @@
 #include "glPrint.h"
 #include "Player.h"
 // Function prototypes
-void myUpdate(GLFWwindow* window, double tDelta);
+//void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-void playerControls(GameObject2D* player, double tDelta);
+//void playerControls(GameObject2D* player, double tDelta);
 void windowcontrols(GLFWwindow* window, double tDelta);
 
 float enemyPhase[3] = { 0.0f, 0.0f, 0.0f };
@@ -37,17 +37,21 @@ int main(void) {
 	//
 	// Setup game scene objects here
 	//
-	addObject("Player1", glm::vec2(-1.5f, 2.0f), glm::radians(0.0f), glm::vec2(0.5f, 0.5f), "resources\\textures\\USS Relaint.png");
+	/*addObject("Player1", glm::vec2(-1.5f, 2.0f), glm::radians(0.0f), glm::vec2(0.5f, 0.5f), "resources\\textures\\USS Relaint.png");
 	addObject("Enemy", glm::vec2(0.0f, 0.0f), glm::radians(-90.0f), glm::vec2(0.5f, 0.5f), "resources\\textures\\BattleCruiser.png");
 	addObject("Enemy", glm::vec2(1.5f, 0.0f), glm::radians(-90.0f), glm::vec2(0.5f, 0.5f), "resources\\textures\\BattleCruiser.png");
-	addObject("Enemy", glm::vec2(-1.5f, 0.0f), glm::radians(-90.0f), glm::vec2(0.5f, 0.5f), "resources\\textures\\BattleCruiser.png");
+	addObject("Enemy", glm::vec2(-1.5f, 0.0f), glm::radians(-90.0f), glm::vec2(0.5f, 0.5f), "resources\\textures\\BattleCruiser.png");*/
+	//Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID);
+	GLuint playerTexture = loadTexture("resources\\textures\\USS Relaint.png");
+	Player* mainPlayer = new Player(glm::vec2(-1.5f, 2.0f), glm::radians(0.0f), glm::vec2(0.5f, 0.5f), playerTexture);
+	addObject("player", mainPlayer);
 
 	// Variables to control object movement
 	
 	// Set the update function for the engine
 	
 	listObjectCounts();
-	setUpdateFunction(myUpdate);
+	//setUpdateFunction(myUpdate);
 	setKeyboardHandler(myKeyboardHandler);
 
 
@@ -67,7 +71,7 @@ float playerVelocity = 1.0f; // units per second
 float leftPlayerOrientationVelocity = glm::radians(20.0f); // radians per second
 float rightPlayerOrientationVelocity = glm::radians(-20.0f); // radians per second
 
-void myUpdate(GLFWwindow* window, double tDelta) {
+/*void myUpdate(GLFWwindow* window, double tDelta) {
 	GameObject2D* player = getObject("Player1");
 	playerControls(player, tDelta);
 	windowcontrols(window, tDelta);
@@ -76,8 +80,7 @@ void myUpdate(GLFWwindow* window, double tDelta) {
 	for (int i = 0; i < (enemies.objectCount); i++) {
 		enemies.objectArray[i]->position.y = sinf(enemyPhase[i]);
 		enemyPhase[i] += enemyPhaseVelocity[i] * (float)tDelta * 0.5f;
-	}
-}
+	}*/
 
 void windowcontrols(GLFWwindow* window, double tDelta) {
 	if (escapeKeyPressed) {
@@ -110,6 +113,7 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 		switch (key) {
 		case GLFW_KEY_ESCAPE:
 			escapeKeyPressed = true;
+			action; exit(0);
 			break;
 		
 		case GLFW_KEY_W:

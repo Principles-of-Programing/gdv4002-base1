@@ -7,6 +7,8 @@ private:
 	float playerVelocity = 0.0f; // units per second
 	float leftPlayerOrientationVelocity = glm::radians(20.0f); // radians per second
 	float rightPlayerOrientationVelocity = glm::radians(-20.0f); // radians per second
+	glm::vec2 velocity;
+	float maxSpeed = 0.01f;
 
 
 public:
