@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "glPrint.h"
 #include "Player.h"
+#include "enemy.h"
 // Function prototypes
 //void myUpdate(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -43,9 +44,15 @@ int main(void) {
 	addObject("Enemy", glm::vec2(-1.5f, 0.0f), glm::radians(-90.0f), glm::vec2(0.5f, 0.5f), "resources\\textures\\BattleCruiser.png");*/
 	//Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID);
 	GLuint playerTexture = loadTexture("resources\\textures\\USS Relaint.png");
-	Player* mainPlayer = new Player(glm::vec2(-1.5f, 2.0f), glm::radians(0.0f), glm::vec2(0.5f, 0.5f), playerTexture);
+	Player* mainPlayer = new Player(glm::vec2(-1.5f, 2.0f), glm::radians(0.0f), glm::vec2(0.5f, 0.5f), playerTexture, 1.0f);
 	addObject("player", mainPlayer);
-
+	GLuint enemyTexture = loadTexture("resources\\textures\\BattleCruiser.png");
+	enemy* enemy1 = new enemy(glm::vec2(0.0f, 0.0f), glm::radians(-90.0f), glm::vec2(0.5f, 0.5f), enemyTexture, enemyPhase[0], enemyPhaseVelocity[0]);
+	enemy* enemy2 = new enemy(glm::vec2(1.5f, 0.0f), glm::radians(-90.0f), glm::vec2(0.5f, 0.5f), enemyTexture, enemyPhase[1], enemyPhaseVelocity[1]);
+	enemy* enemy3 = new enemy(glm::vec2(-1.5f, 0.0f), glm::radians(-90.0f), glm::vec2(0.5f, 0.5f), enemyTexture, enemyPhase[2], enemyPhaseVelocity[2]);
+	addObject("enemy1", enemy1);
+	addObject("enemy2", enemy2);
+	addObject("enemy3", enemy3);
 	// Variables to control object movement
 	
 	// Set the update function for the engine
@@ -87,25 +94,6 @@ void windowcontrols(GLFWwindow* window, double tDelta) {
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 }
-/*void playerControls(GameObject2D* player, double tDelta) {
-	if (wKeyPressed) {
-		glm::vec2 forward = glm::vec2(cosf(player->orientation), sinf(player->orientation));
-		player->position += forward * playerVelocity * (float)tDelta;
-	}
-	if (aKeyPressed) {
-		player->orientation += anglesPerSecond * (float)tDelta;
-		glm::vec2 left = leftPlayerOrientationVelocity * glm::vec2(-sinf(player->orientation), cosf(player->orientation));
-	}
-	if (sKeyPressed) {
-		glm::vec2 backward = glm::vec2(-cosf(player->orientation), -sinf(player->orientation));
-		player->position += backward * playerVelocity * (float)tDelta;
-	}
-	if (dKeyPressed) {
-		player->orientation -= anglesPerSecond * (float)tDelta;
-		glm::vec2 right = rightPlayerOrientationVelocity * glm::vec2(sinf(player->orientation), -cosf(player->orientation));
-	}
-}*/
-
 
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	// check if the key is pressed 
@@ -113,7 +101,7 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 		switch (key) {
 		case GLFW_KEY_ESCAPE:
 			escapeKeyPressed = true;
-			action; exit(0);
+			glfwSetWindowShouldClose(window, true);
 			break;
 		
 		case GLFW_KEY_W:
