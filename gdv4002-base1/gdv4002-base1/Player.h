@@ -9,7 +9,7 @@ private:
 	float leftPlayerOrientationVelocity = glm::radians(20.0f); // radians per second
 	float rightPlayerOrientationVelocity = glm::radians(-20.0f); // radians per second
 	glm::vec2 velocity;
-	float maxSpeed = 1.0f;
+	float maxSpeed = 1.5f;
 	float mass;
 	
 public:

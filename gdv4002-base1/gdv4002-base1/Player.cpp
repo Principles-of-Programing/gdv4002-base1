@@ -14,7 +14,7 @@ Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 void Player::update(double tDelta)
 {
 	glm::vec2 F = glm::vec2(0.0f, 0.0f);
-	const float Thrust = 2.0f; // Force Applied 
+	const float Thrust = 1.5f; // Force Applied 
 	if (wKeyPressed) {
 		glm::vec2 forward = glm::vec2(cosf(orientation), sinf(orientation));
 		F += forward * Thrust;
@@ -35,7 +35,7 @@ void Player::update(double tDelta)
 
 	// Intergrate acceleration to get new velocity
 	velocity += (acceleration * (float)tDelta);
-	
+
 
 	// Applying a Max Speed Limit to the Player mimicing the speed limit of a spaceship due to 
 	if (glm::length(velocity) > maxSpeed)
@@ -53,5 +53,15 @@ void Player::update(double tDelta)
 
 	// Add Impule Forces for collision impact
 	if (position.y < -getViewplaneHeight() / 2.0f) {
+		F += glm::vec2(0.0f, 20.0f);
+	}
+	if (position.y > getViewplaneHeight() / 2.0f) {
+		F += glm::vec2(0.0f, -20.0f);
+	}
+	if (position.x < -getViewplaneHeight() / 2.0f) {
+		F += glm::vec2(20.0f, 0.0f);
+	}
+	if (position.x > getViewplaneHeight() / 2.0f) {
+		F += glm::vec2(-20.0f, 0.0f);
 	}
 }
