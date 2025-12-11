@@ -30,6 +30,20 @@ void Player::update(double tDelta)
 	if (dKeyPressed) {
 		orientation -= anglesPerSecond * (float)tDelta;
 	}
+	// Add Impule Forces for collision impact
+	if (position.y < -getViewplaneHeight() / 2.0f) {
+		F += glm::vec2(0.0f, 20.0f);
+	}
+	if (position.y > getViewplaneHeight() / 2.0f) {
+		F += glm::vec2(0.0f, -20.0f);
+	}
+	if (position.x < -getViewplaneHeight() / 2.0f) {
+		F += glm::vec2(20.0f, 0.0f);
+	}
+	if (position.x > getViewplaneHeight() / 2.0f) {
+		F += glm::vec2(-20.0f, 0.0f);
+	}
+	
 	//Caculate acceleration from force and mass
 	glm::vec2 acceleration = F / mass;
 
@@ -51,17 +65,5 @@ void Player::update(double tDelta)
 	// Update position based on velocity
 	position += (velocity * (float)tDelta);
 
-	// Add Impule Forces for collision impact
-	if (position.y < -getViewplaneHeight() / 2.0f) {
-		F += glm::vec2(0.0f, 20.0f);
-	}
-	if (position.y > getViewplaneHeight() / 2.0f) {
-		F += glm::vec2(0.0f, -20.0f);
-	}
-	if (position.x < -getViewplaneHeight() / 2.0f) {
-		F += glm::vec2(20.0f, 0.0f);
-	}
-	if (position.x > getViewplaneHeight() / 2.0f) {
-		F += glm::vec2(-20.0f, 0.0f);
-	}
+	
 }

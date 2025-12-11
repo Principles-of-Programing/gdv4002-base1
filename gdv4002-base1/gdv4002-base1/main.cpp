@@ -7,9 +7,10 @@
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 //void playerControls(GameObject2D* player, double tDelta);
 void windowcontrols(GLFWwindow* window, double tDelta);
+glm::vec2 gravity = glm::vec2(0.0f, -1.0f);
 
-float enemyPhase[3] = { 0.0f, 0.0f, 0.0f };
-float enemyPhaseVelocity[3] = { glm::radians(90.f), glm::radians(90.f), glm::radians(90.f) };
+float enemyPhase[3] = { 0.0f, 0.5f, 0.5f };
+float enemyPhaseVelocity[3] = { glm::radians(90.f), glm::radians(80.f), glm::radians(80.f) };
 bool wKeyPressed = false;
 bool aKeyPressed = false;
 bool sKeyPressed = false;
@@ -27,7 +28,8 @@ int main(void) {
 		printf("Cannot setup game window!!!\n");
 		return initResult; // exit if setup failed
 	}
-	printf("System Loaded Accessing...\n");
+	printf("GDV4002 Asteroid Version: 0.6.2 Merry Christmas\n");
+	printf("Please ensure that the Engine is Version 1.2 or higher if code is not working correctly\n");
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -57,7 +59,7 @@ int main(void) {
 	
 	// Set the update function for the engine
 	
-	listObjectCounts();
+	//listObjectCounts();
 	//setUpdateFunction(myUpdate);
 	setKeyboardHandler(myKeyboardHandler);
 
