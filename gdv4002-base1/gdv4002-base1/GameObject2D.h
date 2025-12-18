@@ -21,6 +21,8 @@ public:
 	GameObject2D();
 	GameObject2D(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID);
 
+	virtual ~GameObject2D();
+
 	virtual void render();
 	virtual void update(double tDelta);
 };

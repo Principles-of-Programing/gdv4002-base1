@@ -28,8 +28,8 @@ int main(void) {
 		printf("Cannot setup game window!!!\n");
 		return initResult; // exit if setup failed
 	}
-	printf("GDV4002 Asteroid Version: 0.6.2 Merry Christmas\n");
-	printf("Please ensure that the Engine is Version 1.2 or higher if code is not working correctly\n");
+	printf("GDV4002 Asteroid Version: 0.7 Merry Christmas\n");
+	printf("Please ensure that the Engine is Version 1.4 or higher if code is not working correctly\n");
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
