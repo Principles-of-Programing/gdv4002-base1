@@ -9,7 +9,7 @@ private:
 	float emitCounter;
 	unsigned long long particleNumber; //monotonically increasing particle index index / number used to set key
 
-	GLuint asteroids[8];
+	GLuint asteroidTextures[8];
 	//random number generation
 	std::mt19937 gen;
 
@@ -17,6 +17,7 @@ private:
 	std::uniform_int_distribution<int> spriteDist;
 	std::uniform_real_distribution<float> normDist; 
 	std::uniform_real_distribution<float> scaleDist;
+	std::uniform_real_distribution<float> massDist;
 	
 public:
 	Emmitter(glm::vec2 initPosition, glm::vec2 initSize, float emitTimeInterval);
