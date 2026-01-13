@@ -57,6 +57,9 @@
     <ClCompile Include="Emmitter.cpp">
       <Filter>My Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Bullets.cpp">
+      <Filter>My Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -93,6 +96,9 @@
       <Filter>My Classes</Filter>
     </ClInclude>
     <ClInclude Include="Emmitter.h">
+      <Filter>My Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullets.h">
       <Filter>My Classes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,6 +8,7 @@
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 void windowcontrols(GLFWwindow* window, double tDelta);
 void deleteAsteroid(GLFWwindow* window, double tDelta);
+void deleteBullets(GLFWwindow* window, double tDelta);
 
 glm::vec2 gravity = glm::vec2(0.0f, -0.05f);
 
@@ -18,18 +19,19 @@ bool aKeyPressed = false;
 bool sKeyPressed = false;
 bool dKeyPressed = false;
 bool escapeKeyPressed = false;
+bool spaceKeyPressed = false;
 
 int main(void) {
     const float pi = 3.14159265359f;
     // Initialize the engine (create window, setup OpenGL backend)
-    int initResult = engineInit("GDV4002 - Program", 1024, 1024);
+    int initResult = engineInit("GDV4002 Asteroid Version 1.2 Alpha", 1024, 1024);
 
     // If the engine initialization failed, report error and exit
     if (initResult != 0) {
         printf("Cannot setup game window!!!\n");
         return initResult; // exit if setup failed
     }
-    printf("GDV4002 Asteroid Version: 1.1 Alpha Build\n");
+    printf("GDV4002 Asteroid Version: 1.2 Alpha Build\n");
     printf("Please ensure that the Engine is Version 1.4 or higher if code is not working correctly\n");
 
     glEnable(GL_BLEND);
@@ -78,6 +80,18 @@ void deleteAsteroid(GLFWwindow* window, double tDelta) {
         }
     }
 }
+void deleteBullets(GLFWwindow* window, double tDelta) {
+    GameObjectCollection bullets = getObjectCollection("Bullet");
+    for (int i = 0; i < bullets.objectCount; i++) {
+        if (bullets.objectArray[i]->position.y > (getViewplaneHeight() / 2.0f)) {
+            delete bullets.objectArray[i];
+        }
+        if (bullets.objectArray[i]->position.x < -(getViewplaneWidth() / 2.0f) || bullets.objectArray[i]->position.x > (getViewplaneWidth() / 2.0f)) {
+            delete bullets.objectArray[i];
+		}
+    }
+}
+
 
 void windowcontrols(GLFWwindow* window, double tDelta) {
     if (escapeKeyPressed) {
@@ -106,6 +120,9 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
         case GLFW_KEY_D:
             dKeyPressed = true;
             break;
+        case GLFW_KEY_SPACE:
+            spaceKeyPressed = true;
+			break;
         }
     }
 
@@ -126,6 +143,9 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
         case GLFW_KEY_ESCAPE:
             escapeKeyPressed = false;
             break;
+		case GLFW_KEY_SPACE:
+			spaceKeyPressed = false;
+			break;
         }
     }
 }

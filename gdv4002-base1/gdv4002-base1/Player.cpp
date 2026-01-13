@@ -1,9 +1,11 @@
 #include "Player.h"
 #include "Engine.h"
+#include "Bullets.h"
 extern bool wKeyPressed;
 extern bool aKeyPressed;
 extern bool sKeyPressed;
 extern bool dKeyPressed;
+extern bool spaceKeyPressed;
 Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass)
 	: GameObject2D(initPosition, initOrientation, initSize, initTextureID)
 {
@@ -64,6 +66,29 @@ void Player::update(double tDelta)
 	}
 	// Update position based on velocity
 	position += (velocity * (float)tDelta);
+
+	// Bullet firing mechanism
+	emitCounter += (float)tDelta;
+	if (emitCounter >= fireInterval) {
+		if (spaceKeyPressed)
+		{
+			printf("Firing Bullet!\n");
+			emitCounter = 0.0f; // Reset counter
+			glm::vec2 bulletPosition = position + glm::vec2(cosf(orientation), sinf(orientation)) * (size.x / 2.0f + 0.1f);
+			glm::vec2 bulletVelocity = velocity + glm::vec2(cosf(orientation), sinf(orientation)) * 5.0f; // Bullet speed
+			auto newBullet = new Bullets(
+				bulletPosition,
+				orientation,
+				glm::vec2(0.1f, 0.1f),
+				loadTexture("resources\\textures\\bullet.png"),
+				0.01f,
+				bulletVelocity
+			);
+			std::string bulletKey = "bullet" + std::to_string(bulletNumber++);
+			addObject(bulletKey.c_str(), newBullet);
+		}
+	}
+
 
 	
 }
